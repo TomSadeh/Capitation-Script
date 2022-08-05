@@ -20,7 +20,7 @@ Sources:
         
     It has 0-1 age group, so I averaged it with the 1-4 age-group, with a weighted average, where the weights are 1 and 3 respectively.
     
-2. EU capitation and Israel capitation with long-term carefromulae are from Ahdut, Politzer and Ben-Nun here:
+2. EU capitation and Israel capitation with long-term care formulae are from Ahdut, Politzer and Ben-Nun here:
 
         https://tinyurl.com/5drzpuvm
         

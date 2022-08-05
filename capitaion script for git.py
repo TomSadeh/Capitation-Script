@@ -16,7 +16,7 @@ Sources:
     Israel standard capitaion formula:
         https://www.btl.gov.il/Mediniyut/Situation/haveruth1/2021/Documents/capitatia_122021.doc
         
-        It has 0-1 age group, so I averaged it with the 1-4 age-group, with a weighted average, where the weights are 1 and 3 respectively.
+         It has a 0-1 age group, so I averaged it with the 1-4 age-group, with a weighted average, where the weights are 1 and 3 respectively, to get 0-4 age group.
     EU capitation and Israel capitation with long-term care formulae are from Ahdut, Politzer and Ben-Nun here:
         https://tinyurl.com/5drzpuvm
         

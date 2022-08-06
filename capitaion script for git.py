@@ -16,7 +16,7 @@ Sources:
     Israel standard capitaion formula:
         https://www.btl.gov.il/Mediniyut/Situation/haveruth1/2021/Documents/capitatia_122021.doc
         
-         It has a 0-1 age group, so I averaged it with the 1-4 age-group, with a weighted average, where the weights are 1 and 3 respectively, to get 0-4 age group.
+        It has 0-1 age group, so I averaged it with the 1-4 age-group, with a weighted average, where the weights are 1 and 3 respectively.
     EU capitation and Israel capitation with long-term care formulae are from Ahdut, Politzer and Ben-Nun here:
         https://tinyurl.com/5drzpuvm
         
@@ -31,6 +31,7 @@ import datetime as dt
 import pandas_datareader.data as web
 import numpy as np
 
+
 # Creating an empty DataFrame to contain the results.
 results = {'Men' : pd.DataFrame(),
           'Women' : pd.DataFrame(),
@@ -38,9 +39,9 @@ results = {'Men' : pd.DataFrame(),
           'EU27' : pd.DataFrame()}
 
 # The path for the capitation csv file. Enter your path here.
-path = r''
+path = r'C:\Users\User\OneDrive\Documents\Work\Health\Capitation'
 # Defining export path. Enter yours here.
-export_path = r''
+export_path = r'C:\Users\User\OneDrive\Documents\Work\Health\Capitation'
 
 # Defining start and end time as datetime objects for the datareader. Adjust the year according to your taste.
 start_time = dt.datetime(1960, 1, 1)
@@ -98,15 +99,11 @@ capped = {'Men' : pd.DataFrame(),
           'LTC' : pd.DataFrame(),
           'EU27' : pd.DataFrame()}
 
-# The main loop that calculates the standard population. Iterating each key in the capped dictionary, and then each age group.
+# The main loop that calculates the standard population. Iterating each key in the capped dictionary.
 for cap in capped.keys():
-    for age in capitation.index:
-        # Multipling each age group by its correspondent factor in the relevant formula. Dropping the 'Country' index for easier calculations. We will return it later.
-        capped[cap] = pd.concat([capped[cap], pop_dict[cap].reset_index(level = 'Country').loc[age, pop.columns[1:]] * capitation.loc[age, cap]])
-    
-    # Returning the country index.
-    capped[cap]['Country'] = pop_dict[cap].index.get_level_values('Country')
-    capped[cap].set_index(['Country'], append = True, inplace = True)
+    # Merging the relevant capitation formula with the relevant population DataFrame, and then multiplying the DataFrame by this column.
+    temp = pd.merge(pop_dict[cap], capitation[cap], left_index = True, right_index = True)
+    capped[cap] = temp.iloc[:, :-1].multiply(temp.iloc[:, -1], axis = 0, level = ['Country', 'Age'])
     
     # Summing the age groups in each country to get the standard population and saving it to the results DataFrame.
     results[cap] = capped[cap].groupby('Country').agg(np.sum)

@@ -34,7 +34,7 @@ import pandas_datareader.data as web
 import numpy as np
 
 
-# The path for the capitation csv file. Enter your path here.
+# The path for the capitation csv file. Enter your path here if the script and the capitation file are not in the same folder.
 path = Path(".")
 # Defining export path. Enter yours here.
 export_path = Path("Capitation")
@@ -51,7 +51,7 @@ pop = pop.transpose()
 # Renaming the columns from datetime objects to the year only.
 pop.columns = pop.columns.year
 
-# Creating an empty DataFrame for combining the 5-year age groups to 10-year age groups, and creating manually the first
+# Creating a list for combining the 5-year age groups to 10-year age groups, and creating manually the first
 # one as it needs to be 5-year age group as in the capitation formulae.
 grouped_dfs = [pop.xs("0 to 4", level="Age", drop_level=False)]
 
@@ -82,11 +82,13 @@ for index in np.arange(2, 18, step=2):
         temp["Age"] = age_list[index][0:2] + " to " + age_list[index + 1][-2:]
     temp.set_index("Age", append=True, inplace=True)
 
-    # Combining the temporary DataFrame with the 10-year age groups DataFrame.
+    # Combining the temporary DataFrame with the 10-year age groups list.
     grouped_dfs.append(temp)
 
 # Manually creating the last age group, as it's 85 and above and not a 5 or 10 years age group.
 grouped_dfs.append(pop.xs("85 and over", level="Age", drop_level=False).copy())
+
+# Creating the main population DataFrame from the list of DF's.
 new_pop = pd.concat(grouped_dfs)
 
 # Creating a dictionary of cross-sections of Men, Women, and two Totals for the Long-Term Care (LCT),
@@ -101,8 +103,7 @@ pop_dict = {
 # Loading the capitation csv file.
 capitation = pd.read_csv(path / "cap.csv", index_col="Age")
 
-# Creating a dictionary of empty DataFrames to contain the calculations of the standard population per sex and
-# per age group.
+# Creating a list of columns to iterate.
 columns = [
     "Men",
     "Women",
@@ -110,6 +111,8 @@ columns = [
     "EU27",
 ]
 
+# The main capitation calculation. The Script multiply the relevant column in the capitation file
+# with the relevant cross-section in the population dictionary.
 results = {
     cap: pop_dict[cap]
     .multiply(capitation[cap], axis=0, level="Age")

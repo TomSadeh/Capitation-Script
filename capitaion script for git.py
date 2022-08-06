@@ -103,7 +103,7 @@ capped = {'Men' : pd.DataFrame(),
 for cap in capped.keys():
     
     # Multiplying the each of the DataFrame's age groups by the relevant column in the capitation file.
-    capped[cap] = temp.iloc[:, :-1].multiply(capitation[cap], axis = 0, level = 'Age')
+    capped[cap] = pop_dict[cap].multiply(capitation[cap], axis = 0, level = 'Age')
     
     # Summing the age groups in each country to get the standard population and saving it to the results DataFrame.
     results[cap] = capped[cap].groupby('Country').agg(np.sum)

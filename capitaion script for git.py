@@ -101,8 +101,8 @@ capped = {'Men' : pd.DataFrame(),
 
 # The main loop that calculates the standard population. Iterating each key in the capped dictionary.
 for cap in capped.keys():
-    # Merging the relevant capitation formula with the relevant population DataFrame, and then multiplying the DataFrame by this column.
     
+    # Merging the relevant capitation formula with the relevant population DataFrame, and then multiplying the DataFrame by this column.
     temp = pd.merge(pop_dict[cap], capitation[cap], left_index = True, right_index = True)
     capped[cap] = temp.iloc[:, :-1].multiply(temp.iloc[:, -1], axis = 0, level = ['Country', 'Age'])
     

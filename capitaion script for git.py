@@ -10,7 +10,7 @@ and calculates standard population for all oecd countries and others with 3 diff
 The capitation formulae can be adjusted in the added csv file named "cap.csv".
 The date range can be change as desired here in the script.
 
-YOU HAVE TO ENTER A PATH FOR THE CAPITATION FILE, else the script won't work.
+YOU HAVE TO ENTER A PATH FOR THE CAPITATION FILE IF IT'S NOT IN THE SAME FOLDER, else the script won't work.
 
 Sources:
     Israel standard capitation formula:
